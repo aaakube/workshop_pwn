@@ -1,0 +1,135 @@
+%% Pwn Workshop — Dark Terminal Theme
+%% Base: Metropolis, overridden for a dark hacker aesthetic
+
+\usepackage{xcolor}
+\usepackage{fontspec}
+\usepackage{listings}
+\usepackage{mdframed}
+
+%% ─── Palette ──────────────────────────────────────────────────────────────────
+\definecolor{pwn-bg}      {HTML}{0A0E14}   % slide background
+\definecolor{pwn-panel}   {HTML}{0D1117}   % code / block bg
+\definecolor{pwn-border}  {HTML}{1E2D3D}   % subtle borders / rules
+\definecolor{pwn-fg}      {HTML}{B3B1AD}   % body text
+\definecolor{pwn-dim}     {HTML}{626A73}   % secondary / footer text
+\definecolor{pwn-blue}    {HTML}{39BAE6}   % accent — titles, bullets
+\definecolor{pwn-green}   {HTML}{AAD94C}   % success / strings
+\definecolor{pwn-orange}  {HTML}{FFB454}   % keywords / highlight
+\definecolor{pwn-red}     {HTML}{FF3333}   % danger / alerts
+\definecolor{pwn-purple}  {HTML}{D2A6FF}   % types / emphasis
+
+%% ─── Font ─────────────────────────────────────────────────────────────────────
+\setmainfont{DejaVu Sans Mono}[Scale=0.82]
+\setmonofont{DejaVu Sans Mono}[Scale=0.82]
+\setsansfont{DejaVu Sans Mono}[Scale=0.82]
+
+%% ─── Beamer colours ───────────────────────────────────────────────────────────
+\setbeamercolor{background canvas}    {bg=pwn-bg}
+\setbeamercolor{normal text}          {fg=pwn-fg,  bg=pwn-bg}
+\setbeamercolor{alerted text}         {fg=pwn-red}
+\setbeamercolor{example text}         {fg=pwn-green}
+
+\setbeamercolor{palette primary}      {fg=pwn-bg,   bg=pwn-green}
+\setbeamercolor{palette secondary}    {fg=pwn-bg,   bg=pwn-green}
+
+\setbeamercolor{title}                {fg=pwn-green}
+\setbeamercolor{subtitle}             {fg=pwn-green}
+\setbeamercolor{author}               {fg=pwn-fg}
+\setbeamercolor{date}                 {fg=pwn-dim}
+\setbeamercolor{institute}            {fg=pwn-dim}
+
+\setbeamercolor{frametitle}           {fg=pwn-green, bg=pwn-bg}
+\setbeamercolor{framesubtitle}        {fg=pwn-green}
+
+\setbeamercolor{block title}          {fg=pwn-bg,   bg=pwn-green}
+\setbeamercolor{block body}           {fg=pwn-fg,   bg=pwn-panel}
+\setbeamercolor{block title alerted}  {fg=pwn-bg,   bg=pwn-red}
+\setbeamercolor{block body alerted}   {fg=pwn-fg,   bg=pwn-panel}
+\setbeamercolor{block title example}  {fg=pwn-bg,   bg=pwn-green}
+\setbeamercolor{block body example}   {fg=pwn-fg,   bg=pwn-panel}
+
+\setbeamercolor{itemize item}         {fg=pwn-green}
+\setbeamercolor{itemize subitem}      {fg=pwn-green}
+\setbeamercolor{itemize subsubitem}   {fg=pwn-orange}
+\setbeamercolor{enumerate item}       {fg=pwn-green}
+\setbeamercolor{enumerate subitem}    {fg=pwn-green}
+\setbeamercolor{description item}     {fg=pwn-orange}
+
+\setbeamercolor{progress bar}         {fg=pwn-green, bg=pwn-border}
+\setbeamercolor{title separator}      {fg=pwn-border}
+
+% Footer / header strip
+\setbeamercolor{section in head/foot} {fg=pwn-dim, bg=pwn-bg}
+\setbeamercolor{footline}             {fg=pwn-dim, bg=pwn-bg}
+
+%% ─── Frame title separator ────────────────────────────────────────────────────
+\makeatletter
+\setlength{\metropolis@titleseparator@linewidth}{0.5pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{0.5pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{0.5pt}
+\makeatother
+
+%% ─── Code listings ────────────────────────────────────────────────────────────
+\lstdefinestyle{pwn}{
+  basicstyle      = \ttfamily\footnotesize\color{pwn-fg},
+  backgroundcolor = \color{pwn-panel},
+  keywordstyle    = \color{pwn-orange}\bfseries,
+  commentstyle    = \color{pwn-dim}\itshape,
+  stringstyle     = \color{pwn-green},
+  numberstyle     = \tiny\color{pwn-dim},
+  identifierstyle = \color{pwn-fg},
+  numbers         = left,
+  stepnumber      = 1,
+  numbersep       = 8pt,
+  frame           = single,
+  framerule       = 0.4pt,
+  rulecolor       = \color{pwn-border},
+  breaklines      = true,
+  showstringspaces= false,
+  tabsize         = 4,
+  xleftmargin     = 1.5em,
+  framexleftmargin= 1.5em,
+}
+\lstset{style=pwn}
+
+%% make pandoc verbatim blocks use the listing style background
+%% (Shaded may or may not be defined depending on whether highlighting is active)
+\makeatletter
+\AtBeginDocument{%
+  \@ifundefined{Shaded}{%
+    \newenvironment{Shaded}{%
+      \begin{mdframed}[backgroundcolor=pwn-panel,linecolor=pwn-border,
+        linewidth=0.4pt,innerleftmargin=6pt,innerrightmargin=6pt,
+        innertopmargin=4pt,innerbottommargin=4pt]%
+    }{\end{mdframed}}%
+  }{%
+    \renewenvironment{Shaded}{%
+      \begin{mdframed}[backgroundcolor=pwn-panel,linecolor=pwn-border,
+        linewidth=0.4pt,innerleftmargin=6pt,innerrightmargin=6pt,
+        innertopmargin=4pt,innerbottommargin=4pt]%
+    }{\end{mdframed}}%
+  }%
+}
+\makeatother
+
+%% ─── Blockquotes ──────────────────────────────────────────────────────────────
+\AtBeginDocument{%
+  \let\oldquote\quote
+  \let\endoldquote\endquote
+  \renewenvironment{quote}{%
+    \begin{mdframed}[
+      leftline=true,
+      linecolor=pwn-blue,
+      linewidth=2pt,
+      backgroundcolor=pwn-panel,
+      innerleftmargin=8pt,
+      innerrightmargin=6pt,
+      innertopmargin=4pt,
+      innerbottommargin=4pt,
+      topline=false, bottomline=false, rightline=false,
+    ]%
+    \color{pwn-fg}\itshape
+  }{%
+    \end{mdframed}%
+  }%
+}
