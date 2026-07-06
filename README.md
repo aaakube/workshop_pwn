@@ -1,19 +1,3 @@
-<<<<<<< HEAD
-# workshop_pwn
-
-# Tools used
-
-gdb:
-```bash
-sud apt install gdb
-```
-
-pwndbg:
-```bash
-curl --proto '=https' --tlsv1.2 -LsSf 'https://install.pwndbg.re' | sh -s -- -t pwndbg-gdb
-```
-
-=======
 # Introductory workshop: stack buffer overflow (at a fast pace)
 
 > Disclaimers:
@@ -279,4 +263,3 @@ For the first labs, ASLR is disabled, which keeps addresses predictable and lets
 - Overflowing the buffer far enough lets you overwrite that return address and redirect execution once the function returns.
 
 Next step: use this understanding to actually build a payload that overwrites the return address in the four labs at https://github.com/aaakube/workshop_pwn.
->>>>>>> 0dc6787 (src ok abut missing sol.py's)
