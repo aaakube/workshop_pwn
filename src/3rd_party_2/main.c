@@ -1,26 +1,22 @@
-#define _GNU_SOURCE 1
+// gcc -o app_safe app_safe.c -I./zlib -L./zlib -lz -Wl,-rpath,'$ORIGIN/zlib'
 
+#include <zlib.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <lzo/lzo1x.h>
+#include <stdlib.h>
 
 int main(void)
 {
-    setvbuf(stdin,  NULL, _IONBF, 0);
-    setvbuf(stdout, NULL, _IONBF, 0);
+    unsigned char in[4096];
+    int n = read(0, in, sizeof(in));
 
-    unsigned char input[4096];
-    lzo_uint in_len = read(0, input, sizeof(input));
+    uLongf out_len = compressBound(n);      // zlib computes the exact safe size
+    unsigned char *out = malloc(out_len);
 
-    unsigned char compressed[4096 + 4096 / 16 + 64 + 3];
-    lzo_uint out_len;
-    lzo_align_t wrkmem[LZO1X_1_MEM_COMPRESS / sizeof(lzo_align_t)];
+    int ret = compress2(out, &out_len, in, n, Z_BEST_COMPRESSION);
+    if (ret == Z_OK)
+        printf("Compressed %d -> %lu bytes\n", n, out_len);
 
-    lzo_init();
-
-    /* Only compresses — lzo1x_decompress() is never called, so the
-       CVE-2014-4607 attack surface does not exist in this binary. */
-    lzo1x_1_compress(input, in_len, compressed, &out_len, wrkmem);
-
-    write(1, compressed, out_len);
+    free(out);
+    return 0;
 }
